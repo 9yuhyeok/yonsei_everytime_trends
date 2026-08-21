@@ -32,17 +32,19 @@
     h1 { margin: 0; font-size: clamp(28px, 5vw, 52px); letter-spacing: -.055em; line-height: 1; }
     .intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: clamp(14px, 3vh, 28px); flex: 0 0 auto; }
     .source { color: var(--muted); font-size: 12px; white-space: nowrap; }
-    .footnote { flex: 0 0 auto; padding-top: 8px; color: var(--muted); font-size: 11pt; font-weight: 400; letter-spacing: .08em; text-align: center; }
+    .footnote { flex: 0 0 auto; padding-top: 8px; color: var(--muted); font-size: 9pt; font-weight: 400; letter-spacing: .08em; text-align: center; }
 
     .shell { position: relative; z-index: 1; min-height: 0; overflow: visible; border: 1px solid var(--line); border-radius: 24px; background: var(--panel); display: flex; flex: 1 1 auto; flex-direction: column; }
     .toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px 22px; padding: 20px 24px 18px; border-bottom: 1px solid var(--line); }
     .period-label { display: flex; align-items: baseline; gap: 12px; min-width: 245px; }
     .period-label strong { font-size: 23px; letter-spacing: -.04em; white-space: nowrap; }
-    .period-label span { color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .date-input-toggle { flex: 0 0 auto; border: 1px solid var(--line); border-radius: 9px; padding: 7px 10px; color: var(--muted); background: var(--panel-2); font: inherit; font-size: 11px; white-space: nowrap; cursor: pointer; touch-action: manipulation; }
+    .date-input-toggle:hover, .date-input-toggle[aria-expanded="true"] { color: var(--text); background: var(--panel); }
+    .date-input { flex: 0 0 auto; width: 190px; min-width: 0; border: 1px solid var(--line); border-radius: 9px; padding: 7px 8px; color: var(--text); background: var(--panel-2); font: inherit; font-size: 13px; }
     .range-control { position: relative; display: flex; align-items: center; justify-content: center; justify-self: center; min-width: 0; }
     .range-control > span { position: absolute; right: calc(100% + 8px); top: 50%; color: var(--muted); font-size: 11px; white-space: nowrap; transform: translateY(-50%); }
     .range-switch { display: flex; flex: 0 0 auto; gap: 3px; padding: 3px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); }
-    .range-switch button { border: 0; border-radius: 9px; padding: 8px 11px; color: var(--muted); background: transparent; font: inherit; font-size: 12px; cursor: pointer; }
+    .range-switch button { border: 0; border-radius: 9px; padding: 8px 11px; color: var(--muted); background: transparent; font: inherit; font-size: 12px; cursor: pointer; touch-action: manipulation; }
     .range-switch button[aria-pressed="true"] { color: var(--text); background: var(--panel); }
     .slider-wrap { grid-column: 1 / -1; grid-row: 2; display: flex; width: 100%; min-width: 0; align-items: center; gap: 13px; }
     .slider-wrap span { color: var(--muted); font-size: 12px; white-space: nowrap; }
@@ -57,12 +59,12 @@
     input[type="range"]:focus-visible { outline: 2px solid rgba(22, 140, 199, .24); outline-offset: 3px; border-radius: 999px; }
     .nudge-controls { grid-column: 3; grid-row: 1; display: flex; align-items: center; justify-content: flex-end; gap: 6px; flex-wrap: wrap; }
     .nudge-group { display: flex; align-items: center; gap: 1px; padding: 3px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); }
-    .nudge-group button { width: 24px; height: 24px; border: 0; border-radius: 7px; color: var(--text); background: transparent; font: inherit; font-size: 13px; line-height: 1; cursor: pointer; }
+    .nudge-group button { width: 24px; height: 24px; border: 0; border-radius: 7px; color: var(--text); background: transparent; font: inherit; font-size: 13px; line-height: 1; cursor: pointer; touch-action: manipulation; }
     .nudge-group button:hover:not(:disabled) { background: var(--panel); }
     .nudge-group button:disabled { color: var(--muted); opacity: .38; cursor: default; }
     .nudge-group span { min-width: 34px; color: var(--muted); font-size: 11px; text-align: center; white-space: nowrap; }
     .autoplay-control { position: relative; z-index: 7; }
-    .autoplay-button { border: 1px solid var(--line); border-radius: 9px; padding: 7px 10px; color: var(--muted); background: var(--panel-2); font: inherit; font-size: 11px; white-space: nowrap; cursor: pointer; }
+    .autoplay-button { border: 1px solid var(--line); border-radius: 9px; padding: 7px 10px; color: var(--muted); background: var(--panel-2); font: inherit; font-size: 11px; white-space: nowrap; cursor: pointer; touch-action: manipulation; }
     .autoplay-button:hover, .autoplay-button[aria-pressed="true"] { color: var(--text); background: var(--panel); }
     .autoplay-popover { position: absolute; z-index: 6; right: 0; bottom: calc(100% + 8px); display: grid; gap: 5px; min-width: 236px; padding: 6px; border: 1px solid var(--line); border-radius: 11px; background: var(--panel); box-shadow: 0 10px 24px rgba(23, 43, 64, .14); }
     .autoplay-popover[hidden] { display: none; }
@@ -70,7 +72,7 @@
     .autoplay-interval-row { grid-template-columns: 44px repeat(4, minmax(0, 1fr)); }
     .autoplay-speed-row { grid-template-columns: 44px repeat(4, minmax(0, 1fr)); }
     .autoplay-interval-row span, .autoplay-speed-row span { color: var(--muted); font-size: 10px; white-space: nowrap; }
-    .autoplay-interval-row button, .autoplay-speed-row button { min-width: 0; border: 0; border-radius: 7px; padding: 5px 3px; color: var(--muted); background: var(--panel-2); font: inherit; font-size: 10px; cursor: pointer; }
+    .autoplay-interval-row button, .autoplay-speed-row button { min-width: 0; border: 0; border-radius: 7px; padding: 5px 3px; color: var(--muted); background: var(--panel-2); font: inherit; font-size: 10px; cursor: pointer; touch-action: manipulation; }
     .autoplay-interval-row button:hover:not(:disabled), .autoplay-interval-row button[aria-pressed="true"], .autoplay-speed-row button:hover:not(:disabled), .autoplay-speed-row button[aria-pressed="true"] { color: var(--text); background: var(--panel); box-shadow: inset 0 0 0 1px var(--accent); }
     .autoplay-interval-row button:disabled, .autoplay-speed-row button:disabled { color: var(--muted); opacity: .38; cursor: default; }
     .chart-wrap { position: relative; min-height: 0; padding: 12px 18px 18px; display: flex; flex: 1 1 auto; flex-direction: column; align-items: center; justify-content: center; }
@@ -94,13 +96,21 @@
       .intro { display: block; }
       .source { display: block; margin-top: 12px; }
       .toolbar { display: block; padding: 16px; }
-      .range-control { margin-top: 14px; }
+      .range-control { flex-direction: column; gap: 4px; margin-top: 14px; }
+      .range-control > span { position: static; transform: none; }
       .range-switch { margin-top: 0; }
       .slider-wrap { margin-top: 16px; }
-      .nudge-controls { margin-top: 10px; }
+      .nudge-controls { margin-top: 10px; column-gap: 4px; row-gap: 6px; }
+      .autoplay-popover { left: 0; right: auto; width: min(236px, calc(100vw - 32px)); min-width: 0; }
       .chart-wrap { padding: 8px 8px 14px; }
       .chart-note { width: 100%; padding-right: 4px; }
       svg { width: 100%; height: auto; min-height: 0; }
+    }
+    @media (max-width: 340px) {
+      .nudge-controls { column-gap: 0; }
+      .nudge-group { gap: 0; padding: 2px; }
+      .nudge-group button { width: 20px; height: 24px; font-size: 11px; }
+      .nudge-group span { min-width: 34px; font-size: 10px; }
     }
   </style>
 </head>
@@ -115,7 +125,11 @@
 
     <section class="shell" aria-label="일별 키워드 버블 차트">
       <div class="toolbar">
-        <div class="period-label"><strong id="periodName">2024.01.01 — 2024.01.30</strong><span id="periodIndex">1 / 933</span></div>
+        <div class="period-label">
+          <strong id="periodName">2024.01.01 — 2024.01.30</strong>
+          <input class="date-input" id="dateInput" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="10" placeholder="YYYY.MM.DD" aria-label="타임포인트 날짜 (년.월.일)" hidden>
+          <button type="button" class="date-input-toggle" id="dateInputToggle" aria-expanded="false">날짜 입력</button>
+        </div>
         <div class="range-control">
           <span>시간 범위</span>
           <div class="range-switch" role="group" aria-label="집계 범위">
@@ -125,29 +139,29 @@
           </div>
         </div>
         <div class="nudge-controls" role="group" aria-label="타임포인트 이동 단위">
-          <div class="nudge-group" role="group" aria-label="하루 단위 이동">
-            <button type="button" data-nudge="-1" aria-label="하루 이전">◀</button>
-            <span>하루</span>
-            <button type="button" data-nudge="1" aria-label="하루 다음">▶</button>
+          <div class="nudge-group" role="group" aria-label="1일 단위 이동">
+            <button type="button" data-nudge="-1" aria-label="1일 이전">◀</button>
+            <span>1일</span>
+            <button type="button" data-nudge="1" aria-label="1일 다음">▶</button>
           </div>
           <div class="nudge-group" role="group" aria-label="일주일 단위 이동">
             <button type="button" data-nudge="-7" aria-label="일주일 이전">◀</button>
             <span>1주일</span>
             <button type="button" data-nudge="7" aria-label="일주일 다음">▶</button>
           </div>
-          <div class="nudge-group" role="group" aria-label="한 달 단위 이동">
-            <button type="button" data-nudge="-30" aria-label="한 달 이전">◀</button>
-            <span>한 달</span>
-            <button type="button" data-nudge="30" aria-label="한 달 다음">▶</button>
+          <div class="nudge-group" role="group" aria-label="1달 단위 이동">
+            <button type="button" data-nudge="-30" aria-label="1달 이전">◀</button>
+            <span>1달</span>
+            <button type="button" data-nudge="30" aria-label="1달 다음">▶</button>
           </div>
           <div class="autoplay-control" id="autoplayControl">
             <div class="autoplay-popover" id="autoplayPopover" role="group" aria-label="자동 재생 간격, 방향 및 속도" hidden>
               <div class="autoplay-interval-row" role="group" aria-label="자동 재생 이동 간격">
                 <span>간격</span>
-                <button type="button" data-autoplay-days="1" aria-pressed="false">하루</button>
+                <button type="button" data-autoplay-days="1" aria-pressed="false">1일</button>
                 <button type="button" data-autoplay-days="7" aria-pressed="false">1주일</button>
                 <button type="button" data-autoplay-days="14" aria-pressed="true">2주일</button>
-                <button type="button" data-autoplay-days="30" aria-pressed="false">한 달</button>
+                <button type="button" data-autoplay-days="30" aria-pressed="false">1달</button>
               </div>
               <div class="autoplay-speed-row" role="group" aria-label="순방향 재생 속도">
                 <span>순방향</span>
@@ -195,7 +209,8 @@
     const chartWrap = document.getElementById("chartWrap");
     const slider = document.getElementById("dateSlider");
     const periodName = document.getElementById("periodName");
-    const periodIndex = document.getElementById("periodIndex");
+    const dateInput = document.getElementById("dateInput");
+    const dateInputToggle = document.getElementById("dateInputToggle");
     const sliderStart = document.getElementById("sliderStart");
     const sliderEnd = document.getElementById("sliderEnd");
     const tooltip = document.getElementById("tooltip");
@@ -222,6 +237,52 @@
 
     function formatDate(iso) {
       return iso.replace(/-/g, ".");
+    }
+
+    function parseInputDate(value) {
+      const normalized = value.trim().replace(/[./]/g, "-");
+      const match = normalized.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      if (!match) return "";
+      const year = Number(match[1]);
+      const month = Number(match[2]);
+      const day = Number(match[3]);
+      const iso = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      const parsed = new Date(`${iso}T00:00:00Z`);
+      if (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() + 1 !== month || parsed.getUTCDate() !== day) return "";
+      return iso;
+    }
+
+    function dateBounds() {
+      const maxStart = dataset.days.length - state.days;
+      return { min: dataset.days[0].d, max: dataset.days[maxStart].d };
+    }
+
+    function indexForDate(iso) {
+      const bounds = dateBounds();
+      const boundedDate = iso < bounds.min ? bounds.min : iso > bounds.max ? bounds.max : iso;
+      const index = dataset.days.findIndex(day => day.d === boundedDate);
+      return index >= 0 ? index : state.index;
+    }
+
+    function closeDateInput() {
+      dateInput.hidden = true;
+      dateInput.setCustomValidity("");
+      periodName.hidden = false;
+      dateInputToggle.textContent = "날짜 입력";
+      dateInputToggle.setAttribute("aria-expanded", "false");
+    }
+
+    function applyDateInput() {
+      const parsedDate = parseInputDate(dateInput.value);
+      if (!parsedDate) {
+        dateInput.setCustomValidity("YYYY.MM.DD 형식으로 입력하세요.");
+        dateInput.reportValidity();
+        return;
+      }
+      dateInput.setCustomValidity("");
+      state.index = indexForDate(parsedDate);
+      closeDateInput();
+      syncControls(true);
     }
 
     function updateSliderVisual() {
@@ -499,7 +560,9 @@
       updateSliderVisual();
       const windowData = getWindow(state.index, state.days);
       periodName.textContent = `${formatDate(windowData.start.d)} — ${formatDate(windowData.end.d)}`;
-      periodIndex.textContent = `${state.index + 1} / ${maxStart + 1}`;
+      dateInput.dataset.min = dataset.days[0].d;
+      dateInput.dataset.max = dataset.days[maxStart].d;
+      dateInput.value = formatDate(dataset.days[state.index].d);
       sliderStart.textContent = formatDate(dataset.days[0].d);
       sliderEnd.textContent = formatDate(dataset.days[maxStart].d);
       slider.setAttribute("aria-valuetext", `${formatDate(windowData.start.d)}부터 ${formatDate(windowData.end.d)}`);
@@ -606,6 +669,7 @@
       button.addEventListener("click", () => {
         stopAutoplay();
         closeAutoplayPopover();
+        closeDateInput();
         const previousEndDate = state.index + state.days - 1;
         state.days = Number(button.dataset.range);
         state.index = Math.max(0, previousEndDate - state.days + 1);
@@ -618,6 +682,7 @@
       button.addEventListener("click", () => {
         stopAutoplay();
         closeAutoplayPopover();
+        closeDateInput();
         state.index += Number(button.dataset.nudge);
         syncControls(true);
       });
@@ -626,17 +691,60 @@
     slider.addEventListener("input", () => {
       stopAutoplay();
       closeAutoplayPopover();
+      closeDateInput();
       state.index = Number(slider.value);
       const windowData = getWindow(state.index, state.days);
       periodName.textContent = `${formatDate(windowData.start.d)} — ${formatDate(windowData.end.d)}`;
-      periodIndex.textContent = `${state.index + 1} / ${Number(slider.max) + 1}`;
       slider.setAttribute("aria-valuetext", `${formatDate(windowData.start.d)}부터 ${formatDate(windowData.end.d)}`);
       updateSliderVisual();
       updateNudgeButtons();
       queueRender(true);
     });
 
+    dateInputToggle.addEventListener("click", () => {
+      if (!dateInput.hidden) {
+        applyDateInput();
+        return;
+      }
+      stopAutoplay();
+      closeAutoplayPopover();
+      const bounds = dateBounds();
+      dateInput.dataset.min = bounds.min;
+      dateInput.dataset.max = bounds.max;
+      dateInput.value = formatDate(dataset.days[state.index].d);
+      periodName.hidden = true;
+      dateInput.hidden = false;
+      dateInputToggle.textContent = "적용";
+      dateInputToggle.setAttribute("aria-expanded", "true");
+      dateInput.focus();
+    });
+
+    dateInput.addEventListener("change", applyDateInput);
+    dateInput.addEventListener("input", () => dateInput.setCustomValidity(""));
+    dateInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        applyDateInput();
+      } else if (event.key === "Escape") {
+        closeDateInput();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      const activeElement = document.activeElement;
+      const editingElement = activeElement?.matches("input, textarea, select, [contenteditable=\"true\"]");
+      if (editingElement || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      stopAutoplay();
+      closeAutoplayPopover();
+      closeDateInput();
+      state.index += event.key === "ArrowLeft" ? -7 : 7;
+      syncControls(true);
+    });
+
     autoplayButton.addEventListener("click", () => {
+      closeDateInput();
       if (autoplayDirection) {
         stopAutoplay();
         closeAutoplayPopover();
