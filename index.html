@@ -38,6 +38,7 @@
     .toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px 22px; padding: 20px 24px 18px; border-bottom: 1px solid var(--line); }
     .period-label { display: flex; align-items: baseline; gap: 12px; min-width: 245px; }
     .period-label strong { display: inline-block; color: var(--text); font-size: 23px; letter-spacing: -.04em; white-space: nowrap; }
+    .period-label strong[hidden] { display: none !important; }
     .date-input-toggle { flex: 0 0 auto; border: 1px solid var(--line); border-radius: 9px; padding: 7px 10px; color: var(--muted); background: var(--panel-2); font: inherit; font-size: 11px; white-space: nowrap; cursor: pointer; touch-action: manipulation; }
     .date-input-toggle:hover, .date-input-toggle[aria-expanded="true"] { color: var(--text); background: var(--panel); }
     .date-input { flex: 0 0 auto; width: 190px; min-width: 0; border: 1px solid var(--line); border-radius: 9px; padding: 7px 8px; color: var(--text); background: var(--panel-2); font: inherit; font-size: 13px; }
@@ -89,25 +90,46 @@
       .slider-wrap { grid-column: 1 / -1; grid-row: 3; }
     }
     @media (max-width: 760px) {
-      .app { width: min(100% - 20px, 640px); }
+      .app { width: min(100% - 20px, 640px); padding-top: 12px; padding-bottom: 8px; }
+      .eyebrow { margin-bottom: 4px; font-size: 10px; letter-spacing: .13em; }
+      h1 { font-size: clamp(25px, 7vw, 36px); }
       .intro { display: block; }
-      .source { display: block; margin-top: 12px; }
-      .toolbar { display: block; padding: 16px; }
-      .range-control { flex-direction: column; gap: 4px; margin-top: 14px; }
+      .intro { margin-bottom: 8px; }
+      .source { display: block; margin-top: 6px; }
+      .shell { border-radius: 18px; }
+      .toolbar { display: block; padding: 8px 10px 6px; }
+      .period-label { width: 100%; min-width: 0; align-items: center; gap: 5px; }
+      .period-label strong { min-width: 0; flex: 1 1 auto; overflow: hidden; font-size: clamp(17px, 5.8vw, 22px); text-overflow: ellipsis; }
+      .date-input { width: 0; flex: 1 1 auto; padding: 5px 6px; font-size: 16px; }
+      .date-input-toggle { padding: 4px 7px; font-size: 10px; }
+      .range-control { width: 100%; flex-direction: column; gap: 2px; margin-top: 5px; }
       .range-control > span { position: static; transform: none; }
-      .range-switch { margin-top: 0; }
-      .slider-wrap { margin-top: 16px; }
-      .nudge-controls { margin-top: 10px; column-gap: 4px; row-gap: 6px; }
-      .autoplay-popover { left: 0; right: auto; width: min(236px, calc(100vw - 32px)); min-width: 0; }
-      .chart-wrap { padding: 8px 8px 14px; }
+      .range-control > span { font-size: 10px; }
+      .range-switch { gap: 1px; padding: 2px; }
+      .range-switch button { padding: 5px 8px; font-size: 11px; }
+      .nudge-controls { width: 100%; margin-top: 5px; justify-content: stretch; column-gap: 3px; row-gap: 0; flex-wrap: nowrap; }
+      .nudge-group { min-width: 0; flex: 1 1 0; gap: 0; padding: 1px; border-radius: 8px; }
+      .nudge-group button { width: 20px; height: 21px; font-size: 11px; }
+      .nudge-group span { min-width: 0; flex: 1 1 auto; font-size: 10px; }
+      .autoplay-control { flex: 0 0 auto; }
+      .autoplay-button { padding: 5px 7px; font-size: 10px; }
+      .autoplay-popover { width: min(236px, calc(100vw - 16px)); min-width: 0; z-index: 20; }
+      .autoplay-interval-row, .autoplay-speed-row { gap: 2px; }
+      .autoplay-interval-row { grid-template-columns: 38px repeat(4, minmax(0, 1fr)); }
+      .autoplay-speed-row { grid-template-columns: 38px repeat(4, minmax(0, 1fr)); }
+      .autoplay-interval-row button, .autoplay-speed-row button { padding: 4px 2px; font-size: 10px; }
+      .slider-wrap { margin-top: 7px; gap: 7px; }
+      .slider-wrap span { font-size: 10px; }
+      input[type="range"] { height: 14px; }
+      .chart-wrap { padding: 3px 4px 6px; }
       .chart-note { width: 100%; padding-right: 4px; }
       svg { width: 100%; height: 100%; min-height: 0; }
     }
     @media (max-width: 340px) {
-      .nudge-controls { column-gap: 0; }
-      .nudge-group { gap: 0; padding: 2px; }
-      .nudge-group button { width: 20px; height: 24px; font-size: 11px; }
-      .nudge-group span { min-width: 34px; font-size: 10px; }
+      .toolbar { padding-right: 8px; padding-left: 8px; }
+      .nudge-controls { column-gap: 2px; }
+      .nudge-group button { width: 18px; }
+      .nudge-group span { font-size: 9px; }
     }
   </style>
 </head>
@@ -771,6 +793,36 @@
       });
     }
 
+    function resetAutoplayPopoverPosition() {
+      autoplayPopover.style.removeProperty("position");
+      autoplayPopover.style.removeProperty("left");
+      autoplayPopover.style.removeProperty("top");
+      autoplayPopover.style.removeProperty("right");
+      autoplayPopover.style.removeProperty("bottom");
+    }
+
+    function positionAutoplayPopover() {
+      if (autoplayPopover.hidden) return;
+      if (!window.matchMedia("(max-width: 760px)").matches) {
+        resetAutoplayPopoverPosition();
+        return;
+      }
+      const buttonBox = autoplayButton.getBoundingClientRect();
+      const popoverBox = autoplayPopover.getBoundingClientRect();
+      const margin = 8;
+      const maxLeft = Math.max(margin, window.innerWidth - popoverBox.width - margin);
+      const left = Math.max(margin, Math.min(maxLeft, buttonBox.right - popoverBox.width));
+      let top = buttonBox.top - popoverBox.height - margin;
+      if (top < margin) top = buttonBox.bottom + margin;
+      const maxTop = Math.max(margin, window.innerHeight - popoverBox.height - margin);
+      top = Math.max(margin, Math.min(maxTop, top));
+      autoplayPopover.style.position = "fixed";
+      autoplayPopover.style.left = `${left}px`;
+      autoplayPopover.style.top = `${top}px`;
+      autoplayPopover.style.right = "auto";
+      autoplayPopover.style.bottom = "auto";
+    }
+
     function setAutoplayDays(days) {
       autoplayDays = Number(days);
       updateNudgeButtons();
@@ -787,11 +839,13 @@
     function openAutoplayPopover() {
       autoplayPopover.hidden = false;
       autoplayButton.setAttribute("aria-expanded", "true");
+      positionAutoplayPopover();
     }
 
     function closeAutoplayPopover() {
       autoplayPopover.hidden = true;
       autoplayButton.setAttribute("aria-expanded", "false");
+      resetAutoplayPopoverPosition();
     }
 
     function stopAutoplay() {
@@ -952,6 +1006,7 @@
       chartResizeFrame = requestAnimationFrame(() => {
         chartResizeFrame = 0;
         if (resizeChart()) syncControls(false);
+        positionAutoplayPopover();
       });
     }
 
@@ -960,6 +1015,8 @@
     } else {
       window.addEventListener("resize", queueChartResize);
     }
+    window.addEventListener("resize", positionAutoplayPopover);
+    if (window.visualViewport) window.visualViewport.addEventListener("resize", positionAutoplayPopover);
 
     syncControls(false);
   </script>
