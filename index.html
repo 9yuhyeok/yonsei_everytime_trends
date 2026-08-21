@@ -37,7 +37,7 @@
     .shell { position: relative; z-index: 1; min-height: 0; overflow: visible; border: 1px solid var(--line); border-radius: 24px; background: var(--panel); display: flex; flex: 1 1 auto; flex-direction: column; }
     .toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px 22px; padding: 20px 24px 18px; border-bottom: 1px solid var(--line); }
     .period-label { display: flex; align-items: baseline; gap: 12px; min-width: 245px; }
-    .period-label strong { font-size: 23px; letter-spacing: -.04em; white-space: nowrap; }
+    .period-label strong { display: inline-block; color: var(--text); font-size: 23px; letter-spacing: -.04em; white-space: nowrap; }
     .date-input-toggle { flex: 0 0 auto; border: 1px solid var(--line); border-radius: 9px; padding: 7px 10px; color: var(--muted); background: var(--panel-2); font: inherit; font-size: 11px; white-space: nowrap; cursor: pointer; touch-action: manipulation; }
     .date-input-toggle:hover, .date-input-toggle[aria-expanded="true"] { color: var(--text); background: var(--panel); }
     .date-input { flex: 0 0 auto; width: 190px; min-width: 0; border: 1px solid var(--line); border-radius: 9px; padding: 7px 8px; color: var(--text); background: var(--panel-2); font: inherit; font-size: 13px; }
@@ -77,15 +77,12 @@
     .autoplay-interval-row button:disabled, .autoplay-speed-row button:disabled { color: var(--muted); opacity: .38; cursor: default; }
     .chart-wrap { position: relative; min-height: 0; padding: 12px 18px 18px; display: flex; flex: 1 1 auto; flex-direction: column; align-items: center; justify-content: center; }
     .chart-note { width: min(100%, 760px); margin: 0 0 2px; color: var(--muted); font-size: 12px; text-align: right; }
-    svg { display: block; width: min(100%, 760px); height: min(100%, 760px); max-width: 100%; max-height: 100%; aspect-ratio: 1 / 1; margin: 0 auto; }
+    svg { display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; flex: 1 1 0; max-width: 100%; max-height: none; aspect-ratio: auto; margin: 0 auto; }
     .grid-line { stroke: rgba(34, 70, 103, .08); stroke-width: 1; }
     .bubble { cursor: default; transition: opacity .15s ease; }
     .bubble circle { stroke: rgba(255, 255, 255, .7); stroke-width: 1.5; }
     .bubble text { fill: #173049; font-weight: 800; pointer-events: none; text-anchor: middle; dominant-baseline: middle; }
     .empty-note { fill: var(--muted); font-size: 14px; text-anchor: middle; }
-    .tooltip { position: absolute; z-index: 4; pointer-events: none; min-width: 0; padding: 7px 9px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel); color: var(--text); opacity: 0; transform: translate(12px, 12px); transition: opacity .15s ease; box-shadow: 0 8px 18px rgba(23, 43, 64, .12); }
-    .tooltip strong { display: block; margin-bottom: 2px; font-size: 12px; }
-    .tooltip span { display: block; color: var(--muted); font-size: 11px; line-height: 1.3; }
     @media (max-width: 900px) {
       .toolbar { grid-template-columns: auto 1fr; }
       .nudge-controls { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; }
@@ -104,7 +101,7 @@
       .autoplay-popover { left: 0; right: auto; width: min(236px, calc(100vw - 32px)); min-width: 0; }
       .chart-wrap { padding: 8px 8px 14px; }
       .chart-note { width: 100%; padding-right: 4px; }
-      svg { width: 100%; height: auto; min-height: 0; }
+      svg { width: 100%; height: 100%; min-height: 0; }
     }
     @media (max-width: 340px) {
       .nudge-controls { column-gap: 0; }
@@ -155,7 +152,7 @@
             <button type="button" data-nudge="30" aria-label="1달 다음">▶</button>
           </div>
           <div class="autoplay-control" id="autoplayControl">
-            <div class="autoplay-popover" id="autoplayPopover" role="group" aria-label="자동 재생 간격, 방향 및 속도" hidden>
+            <div class="autoplay-popover" id="autoplayPopover" role="group" aria-label="자동 재생 간격 및 속도" hidden>
               <div class="autoplay-interval-row" role="group" aria-label="자동 재생 이동 간격">
                 <span>간격</span>
                 <button type="button" data-autoplay-days="1" aria-pressed="false">1일</button>
@@ -163,19 +160,12 @@
                 <button type="button" data-autoplay-days="14" aria-pressed="true">2주일</button>
                 <button type="button" data-autoplay-days="30" aria-pressed="false">1달</button>
               </div>
-              <div class="autoplay-speed-row" role="group" aria-label="순방향 재생 속도">
-                <span>순방향</span>
-                <button type="button" data-autoplay-direction="1" data-autoplay-interval="1200" aria-pressed="false" aria-label="순방향 1배속">1×</button>
-                <button type="button" data-autoplay-direction="1" data-autoplay-interval="800" aria-pressed="false" aria-label="순방향 2배속">2×</button>
-                <button type="button" data-autoplay-direction="1" data-autoplay-interval="600" aria-pressed="false" aria-label="순방향 4배속">4×</button>
-                <button type="button" data-autoplay-direction="1" data-autoplay-interval="400" aria-pressed="false" aria-label="순방향 8배속">8×</button>
-              </div>
-              <div class="autoplay-speed-row" role="group" aria-label="역방향 재생 속도">
-                <span>역방향</span>
-                <button type="button" data-autoplay-direction="-1" data-autoplay-interval="1200" aria-pressed="false" aria-label="역방향 1배속">1×</button>
-                <button type="button" data-autoplay-direction="-1" data-autoplay-interval="800" aria-pressed="false" aria-label="역방향 2배속">2×</button>
-                <button type="button" data-autoplay-direction="-1" data-autoplay-interval="600" aria-pressed="false" aria-label="역방향 4배속">4×</button>
-                <button type="button" data-autoplay-direction="-1" data-autoplay-interval="400" aria-pressed="false" aria-label="역방향 8배속">8×</button>
+              <div class="autoplay-speed-row" role="group" aria-label="재생 속도">
+                <span>속도</span>
+                <button type="button" data-autoplay-direction="1" data-autoplay-interval="1200" aria-pressed="false" aria-label="재생 속도 1배속">1×</button>
+                <button type="button" data-autoplay-direction="1" data-autoplay-interval="800" aria-pressed="false" aria-label="재생 속도 2배속">2×</button>
+                <button type="button" data-autoplay-direction="1" data-autoplay-interval="600" aria-pressed="false" aria-label="재생 속도 4배속">4×</button>
+                <button type="button" data-autoplay-direction="1" data-autoplay-interval="400" aria-pressed="false" aria-label="재생 속도 8배속">8×</button>
               </div>
             </div>
             <button type="button" class="autoplay-button" id="autoplayButton" aria-expanded="false" aria-controls="autoplayPopover" aria-pressed="false">자동 재생</button>
@@ -195,7 +185,6 @@
           <g id="bubbles"></g>
           <text id="emptyNote" class="empty-note" x="350" y="350" opacity="0">표시할 키워드가 없습니다.</text>
         </svg>
-        <div class="tooltip" id="tooltip"><strong></strong><span></span></div>
       </div>
     </section>
     <footer class="footnote">만든이: QRM25 박규혁</footer>
@@ -208,14 +197,12 @@
     const bubbles = document.getElementById("bubbles");
     const chartWrap = document.getElementById("chartWrap");
     const slider = document.getElementById("dateSlider");
+    const emptyNote = document.getElementById("emptyNote");
     const periodName = document.getElementById("periodName");
     const dateInput = document.getElementById("dateInput");
     const dateInputToggle = document.getElementById("dateInputToggle");
     const sliderStart = document.getElementById("sliderStart");
     const sliderEnd = document.getElementById("sliderEnd");
-    const tooltip = document.getElementById("tooltip");
-    const tooltipTitle = tooltip.querySelector("strong");
-    const tooltipValue = tooltip.querySelector("span");
     const rangeButtons = [...document.querySelectorAll("[data-range]")];
     const nudgeButtons = [...document.querySelectorAll("[data-nudge]")];
     const autoplayControl = document.getElementById("autoplayControl");
@@ -224,16 +211,19 @@
     const autoplayIntervalButtons = [...document.querySelectorAll("[data-autoplay-days]")];
     const autoplaySpeedButtons = [...document.querySelectorAll("[data-autoplay-direction]")];
     const palette = ["#68d5ff", "#ffb86b", "#b6f36b", "#d49bff", "#ff7f9c", "#72e0c0", "#ffc96b", "#a8b9ff", "#ff9fbc", "#8bd46b"];
+    const labelBaseRgb = [0x17, 0x30, 0x49];
     const positions = new Map();
     const cache = new Map();
     const nodeStates = new Map();
     const state = { days: 30, index: 0 };
+    let chartLayout = { width: 700, height: 700, minX: 30, maxX: 670, minY: 30, maxY: 670 };
     const SVG_NS = "http://www.w3.org/2000/svg";
     let visibleNodes = new Set();
     let autoplayTimer = 0;
     let autoplayDirection = 0;
     let autoplayInterval = 1200;
     let autoplayDays = 14;
+    let chartResizeFrame = 0;
 
     function formatDate(iso) {
       return iso.replace(/-/g, ".");
@@ -298,27 +288,70 @@
     }
 
     function positionFor(word) {
-      if (positions.has(word)) return positions.get(word);
-      const hash = hashWord(word);
-      const cols = 32;
-      const rows = 32;
-      const slot = hash % (cols * rows);
-      const base = {
-        x: 28 + (slot % cols) * 20.5,
-        y: 34 + Math.floor(slot / cols) * 20.5
+      let normalized = positions.get(word);
+      if (!normalized) {
+        const hash = hashWord(word);
+        const cols = 32;
+        const rows = 32;
+        const slot = hash % (cols * rows);
+        const jitterX = ((hash >>> 8) % 9) - 4;
+        const jitterY = ((hash >>> 16) % 9) - 4;
+        normalized = {
+          x: Math.max(0.02, Math.min(0.98, (28 + (slot % cols) * 20.5 + jitterX) / 700)),
+          y: Math.max(0.02, Math.min(0.98, (34 + Math.floor(slot / cols) * 20.5 + jitterY) / 700))
+        };
+        positions.set(word, normalized);
+      }
+      return {
+        x: chartLayout.minX + normalized.x * (chartLayout.maxX - chartLayout.minX),
+        y: chartLayout.minY + normalized.y * (chartLayout.maxY - chartLayout.minY)
       };
-      const jitterX = ((hash >>> 8) % 9) - 4;
-      const jitterY = ((hash >>> 16) % 9) - 4;
-      const position = { x: base.x + jitterX, y: base.y + jitterY };
-      positions.set(word, position);
-      return position;
+    }
+
+    function resizeChart() {
+      const rect = svg.getBoundingClientRect();
+      const width = Math.max(1, Math.round(rect.width || chartLayout.width));
+      const height = Math.max(1, Math.round(rect.height || chartLayout.height));
+      const insetX = Math.min(30, Math.max(12, width * 0.04));
+      const insetY = Math.min(30, Math.max(12, height * 0.04));
+      const previous = chartLayout;
+      const next = {
+        width,
+        height,
+        minX: insetX,
+        maxX: Math.max(insetX + 1, width - insetX),
+        minY: insetY,
+        maxY: Math.max(insetY + 1, height - insetY)
+      };
+      const changed = previous.width !== next.width || previous.height !== next.height;
+      chartLayout = next;
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      emptyNote.setAttribute("x", (width / 2).toFixed(2));
+      emptyNote.setAttribute("y", (height / 2).toFixed(2));
+      if (!changed) return false;
+
+      const remap = (value, oldMin, oldMax, newMin, newMax) => {
+        const ratio = (value - oldMin) / Math.max(1, oldMax - oldMin);
+        return newMin + Math.max(0, Math.min(1, ratio)) * (newMax - newMin);
+      };
+      nodeStates.forEach(node => {
+        if (!node.group) return;
+        node.x = remap(node.x, previous.minX, previous.maxX, next.minX, next.maxX);
+        node.y = remap(node.y, previous.minY, previous.maxY, next.minY, next.maxY);
+        node.startX = remap(node.startX, previous.minX, previous.maxX, next.minX, next.maxX);
+        node.startY = remap(node.startY, previous.minY, previous.maxY, next.minY, next.maxY);
+        const anchor = positionFor(node.word);
+        node.targetX = anchor.x;
+        node.targetY = anchor.y;
+      });
+      return true;
     }
 
     function labelSize(word, radius) {
       const units = [...word].reduce((total, character) => total + (/^[\x00-\x7F]$/.test(character) ? 0.62 : 1), 0);
-      const widthFit = Math.max(16, radius * 1.5) / Math.max(1, units);
-      const radiusFit = radius * 0.43;
-      return Math.max(9, Math.min(28, widthFit, radiusFit));
+      const widthFit = Math.max(18, radius * 1.7) / Math.max(1, units);
+      const radiusFit = radius * 0.60;
+      return Math.max(9, Math.min(widthFit, radiusFit));
     }
 
     function getWindow(start, days) {
@@ -332,7 +365,7 @@
       });
       const words = [...sums.entries()]
         .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"))
-        .slice(0, 15)
+        .slice(0, 30)
         .map(([word, total], rank) => ({ word, total, average: total / days, rank: rank + 1 }));
       const result = { words, sample, start: dataset.days[start], end: dataset.days[start + days - 1] };
       cache.set(cacheKey, result);
@@ -340,13 +373,33 @@
     }
 
     function scaleFor(items) {
-      const total = items.reduce((sum, item) => sum + item.total, 0);
-      const targetArea = 620 * 620 * 0.54;
-      return total > 0 ? Math.sqrt(targetArea / (Math.PI * total)) : 0;
+      const weightedTotal = items.reduce((sum, item) => sum + Math.pow(item.total, 4 / 3), 0);
+      const targetArea = (chartLayout.maxX - chartLayout.minX) * (chartLayout.maxY - chartLayout.minY) * 0.54;
+      return weightedTotal > 0 ? Math.sqrt(targetArea / (Math.PI * weightedTotal)) : 0;
     }
 
     function radiusFor(total, scale) {
-      return total > 0 ? Math.sqrt(total) * scale : 0;
+      return total > 0 ? Math.pow(total, 2 / 3) * scale : 0;
+    }
+
+    function gravityStrengthFor() {
+      return 0.01;
+    }
+
+    function rgbFromHex(hex) {
+      const normalizedHex = hex.replace("#", "");
+      return [
+        parseInt(normalizedHex.slice(0, 2), 16),
+        parseInt(normalizedHex.slice(2, 4), 16),
+        parseInt(normalizedHex.slice(4, 6), 16)
+      ];
+    }
+
+    function lightenColor([red, green, blue], rankProgress, maxWhiteMix) {
+      const curvedProgress = Math.pow(Math.max(0, Math.min(1, rankProgress)), 2.2);
+      const whiteMix = maxWhiteMix * curvedProgress;
+      const mix = channel => Math.round(channel + (255 - channel) * whiteMix);
+      return `rgb(${mix(red)}, ${mix(green)}, ${mix(blue)})`;
     }
 
     function ensureNode(word) {
@@ -358,98 +411,111 @@
       const circle = document.createElementNS(SVG_NS, "circle");
       const label = document.createElementNS(SVG_NS, "text");
       label.textContent = word;
-      circle.setAttribute("fill", palette[hashWord(word) % palette.length]);
+      label.style.fillOpacity = "1";
+      const baseColor = palette[hashWord(word) % palette.length];
+      circle.setAttribute("fill", baseColor);
+      circle.setAttribute("fill-opacity", "1");
       group.append(circle, label);
       bubbles.appendChild(group);
       const home = positionFor(word);
-      const node = existing || { group: null, circle: null, label: null, word, x: home.x, y: home.y, vx: 0, vy: 0, radius: 0, targetRadius: 0, targetX: home.x, targetY: home.y, item: null };
+      const node = existing || { group: null, circle: null, label: null, word, baseColor, baseRgb: rgbFromHex(baseColor), rankProgress: 0, targetRankProgress: 0, x: home.x, y: home.y, vx: 0, vy: 0, radius: 0, targetRadius: 0, targetX: home.x, targetY: home.y, item: null };
+      circle.setAttribute("cx", "0");
+      circle.setAttribute("cy", "0");
+      label.setAttribute("x", "0");
+      label.setAttribute("y", "0");
       node.group = group;
       node.circle = circle;
       node.label = label;
+      node.baseColor = baseColor;
+      node.baseRgb = node.baseRgb || rgbFromHex(baseColor);
+      node.lastBubbleColor = null;
+      node.lastLabelColor = null;
+      node.lastGroupOpacity = null;
+      node.lastPointerEvents = null;
+      node.lastLabelOpacity = null;
+      node.lastTransform = null;
+      node.lastRadius = null;
+      node.lastFontSize = null;
       nodeStates.set(word, node);
-      group.addEventListener("pointerenter", event => {
-        if (!node.item) return;
-        tooltipTitle.textContent = node.item.word;
-        tooltipValue.textContent = `순위 ${node.item.rank}위`;
-        const rect = chartWrap.getBoundingClientRect();
-        tooltip.style.left = `${event.clientX - rect.left}px`;
-        tooltip.style.top = `${event.clientY - rect.top}px`;
-        tooltip.style.opacity = "1";
-      });
-      group.addEventListener("pointermove", event => {
-        const rect = chartWrap.getBoundingClientRect();
-        tooltip.style.left = `${event.clientX - rect.left}px`;
-        tooltip.style.top = `${event.clientY - rect.top}px`;
-      });
-      group.addEventListener("pointerleave", () => { tooltip.style.opacity = "0"; });
       return node;
     }
 
     function resolveCollisions(frameNodes, immediate = false) {
-      const active = frameNodes.filter(node => node.targetRadius > 0.5 || node.radius > 0.5);
-      for (let pass = 0; pass < (immediate ? 8 : 5); pass += 1) {
+      const active = frameNodes.filter(node => node.targetRadius > 0.5);
+      let anyOverlap = false;
+      const passLimit = immediate ? 5 : 4;
+      for (let pass = 0; pass < passLimit; pass += 1) {
+        let passOverlap = false;
         for (let firstIndex = 0; firstIndex < active.length; firstIndex += 1) {
           for (let secondIndex = firstIndex + 1; secondIndex < active.length; secondIndex += 1) {
             const first = active[firstIndex];
             const second = active[secondIndex];
             let dx = second.x - first.x;
             let dy = second.y - first.y;
-            let distance = Math.hypot(dx, dy);
-            if (distance < 0.01) {
+            let distanceSquared = dx * dx + dy * dy;
+            if (distanceSquared < 0.0001) {
               const angle = (hashWord(first.word + second.word) % 360) * Math.PI / 180;
               dx = Math.cos(angle);
               dy = Math.sin(angle);
-              distance = 1;
+              distanceSquared = 1;
             }
             const minimum = first.radius + second.radius + 12;
-            if (distance < minimum) {
-              const push = (minimum - distance) * (immediate ? 0.5 : 0.10);
-              const nx = dx / distance;
-              const ny = dy / distance;
-              if (immediate) {
-                first.x -= nx * push;
-                first.y -= ny * push;
-                second.x += nx * push;
-                second.y += ny * push;
-              } else {
-                const correction = (minimum - distance) * 0.09;
-                first.x -= nx * correction;
-                first.y -= ny * correction;
-                second.x += nx * correction;
-                second.y += ny * correction;
-                const relativeVelocity = (second.vx - first.vx) * nx + (second.vy - first.vy) * ny;
-                if (relativeVelocity < 0) {
-                  const impulse = -relativeVelocity * 0.24;
-                  first.vx -= nx * impulse;
-                  first.vy -= ny * impulse;
-                  second.vx += nx * impulse;
-                  second.vy += ny * impulse;
-                }
+            if (distanceSquared >= minimum * minimum) continue;
+            passOverlap = true;
+            anyOverlap = true;
+            const distance = Math.sqrt(distanceSquared);
+            const push = (minimum - distance) * (immediate ? 0.5 : 0.10);
+            const nx = dx / distance;
+            const ny = dy / distance;
+            if (immediate) {
+              first.x -= nx * push;
+              first.y -= ny * push;
+              second.x += nx * push;
+              second.y += ny * push;
+            } else {
+              const correction = (minimum - distance) * 0.06;
+              first.x -= nx * correction;
+              first.y -= ny * correction;
+              second.x += nx * correction;
+              second.y += ny * correction;
+              const relativeVelocity = (second.vx - first.vx) * nx + (second.vy - first.vy) * ny;
+              if (relativeVelocity < 0) {
+                const impulse = -relativeVelocity * 0.14;
+                first.vx -= nx * impulse;
+                first.vy -= ny * impulse;
+                second.vx += nx * impulse;
+                second.vy += ny * impulse;
               }
             }
           }
         }
         active.forEach(node => {
-          const minX = 30 + node.radius;
-          const maxX = 670 - node.radius;
-          const minY = 54 + node.radius;
-          const maxY = 670 - node.radius;
+          const minX = chartLayout.minX + node.radius;
+          const maxX = chartLayout.maxX - node.radius;
+          const minY = chartLayout.minY + node.radius;
+          const maxY = chartLayout.maxY - node.radius;
           if (node.x < minX) { node.x = minX; if (!immediate && node.vx < 0) node.vx = 0; }
           if (node.x > maxX) { node.x = maxX; if (!immediate && node.vx > 0) node.vx = 0; }
           if (node.y < minY) { node.y = minY; if (!immediate && node.vy < 0) node.vy = 0; }
           if (node.y > maxY) { node.y = maxY; if (!immediate && node.vy > 0) node.vy = 0; }
         });
+        if (!passOverlap) break;
       }
+      return anyOverlap;
     }
 
     let animationId = 0;
     function render(animate = true) {
       const windowData = getWindow(state.index, state.days);
+      const initialRender = visibleNodes.size === 0;
       const values = new Map(windowData.words.map(item => [item.word, item]));
       const scale = scaleFor(windowData.words);
+      const targetRadii = new Map(windowData.words.map(item => [item.word, radiusFor(item.total, scale)]));
+      const initialCenterX = (chartLayout.minX + chartLayout.maxX) / 2;
+      const initialCenterY = (chartLayout.minY + chartLayout.maxY) / 2;
       const startTime = performance.now();
       const duration = animate
-        ? (autoplayDirection ? Math.min(875, Math.max(180, autoplayInterval * 0.78)) : 875)
+        ? (autoplayDirection ? autoplayInterval : 1005)
         : 0;
       const currentAnimation = ++animationId;
       const nextNodes = new Set();
@@ -457,19 +523,33 @@
         const node = ensureNode(word);
         const anchor = positionFor(word);
         const established = visibleNodes.has(node) && node.radius > 0.1;
+        const targetRadius = targetRadii.get(word) || 0;
+        const gravityStrength = gravityStrengthFor();
+        const initialPull = gravityStrength / (0.08 + gravityStrength);
         const target = established
           ? { x: node.x + (anchor.x - node.x) * 0.22, y: node.y + (anchor.y - node.y) * 0.22 }
-          : anchor;
+          : {
+              x: anchor.x + (initialCenterX - anchor.x) * initialPull,
+              y: anchor.y + (initialCenterY - anchor.y) * initialPull
+            };
+        if (!established) {
+          node.x = target.x;
+          node.y = target.y;
+        }
         node.item = item;
         node.group.dataset.active = String(Boolean(item));
         node.startX = Number.isFinite(node.x) ? node.x : target.x;
         node.startY = Number.isFinite(node.y) ? node.y : target.y;
         node.startRadius = node.radius || 0;
+        node.startRankProgress = Number.isFinite(node.rankProgress) ? node.rankProgress : 0;
         node.vx *= 0.55;
         node.vy *= 0.55;
         node.targetX = target.x;
         node.targetY = target.y;
-        node.targetRadius = radiusFor(item?.total || 0, scale);
+        node.targetRadius = targetRadius;
+        node.targetRankProgress = windowData.words.length > 1
+          ? Math.max(0, Math.min(1, (item.rank - 1) / (windowData.words.length - 1)))
+          : 0;
         nextNodes.add(node);
       });
       visibleNodes.forEach(node => {
@@ -479,14 +559,55 @@
         node.startX = node.x;
         node.startY = node.y;
         node.startRadius = node.radius;
+        node.startRankProgress = Number.isFinite(node.rankProgress) ? node.rankProgress : 0;
         node.vx *= 0.55;
         node.vy *= 0.55;
         node.targetX = positionFor(node.word).x;
         node.targetY = positionFor(node.word).y;
         node.targetRadius = 0;
+        node.targetRankProgress = 1;
         nextNodes.add(node);
       });
       visibleNodes = nextNodes;
+
+      if (!animate && initialRender) {
+        const initialNodes = [...visibleNodes];
+        const centerX = (chartLayout.minX + chartLayout.maxX) / 2;
+        const centerY = (chartLayout.minY + chartLayout.maxY) / 2;
+        initialNodes.forEach(node => {
+          node.radius = node.targetRadius;
+          node.startRadius = node.targetRadius;
+          node.rankProgress = node.targetRankProgress;
+          node.startRankProgress = node.targetRankProgress;
+          node.vx = 0;
+          node.vy = 0;
+        });
+        for (let iteration = 0; iteration < 36; iteration += 1) {
+          let maxStep = 0;
+          initialNodes.forEach(node => {
+            node.vx += (node.targetX - node.x) * 0.08;
+            node.vy += (node.targetY - node.y) * 0.08;
+            const gravityStrength = gravityStrengthFor();
+            node.vx += (centerX - node.x) * gravityStrength;
+            node.vy += (centerY - node.y) * gravityStrength;
+            node.vx *= 0.82;
+            node.vy *= 0.82;
+            maxStep = Math.max(maxStep, Math.abs(node.vx), Math.abs(node.vy));
+            node.x += node.vx;
+            node.y += node.vy;
+          });
+          const hadOverlap = resolveCollisions(initialNodes, true);
+          if (maxStep < 0.025 && !hadOverlap) break;
+        }
+        initialNodes.forEach(node => {
+          node.startX = node.x;
+          node.startY = node.y;
+          node.targetX = node.x;
+          node.targetY = node.y;
+          node.vx = 0;
+          node.vy = 0;
+        });
+      }
 
       function removeFinishedNode(node) {
         if (node.targetRadius > 0 || node.radius > 0.1 || !node.group) return;
@@ -501,34 +622,83 @@
       function frame(now) {
         if (currentAnimation !== animationId) return;
         const progress = duration ? Math.min(1, (now - startTime) / duration) : 1;
-        const eased = 1 - Math.pow(1 - progress, 2.7);
+        const eased = 1 - Math.pow(1 - progress, 2.3);
+        const radiusEased = 1 - Math.pow(1 - progress, 3.0);
         const frameNodes = [...visibleNodes];
+        const centerX = (chartLayout.minX + chartLayout.maxX) / 2;
+        const centerY = (chartLayout.minY + chartLayout.maxY) / 2;
         frameNodes.forEach(node => {
-          const desiredX = node.startX + (node.targetX - node.startX) * eased;
-          const desiredY = node.startY + (node.targetY - node.startY) * eased;
-          node.vx += (desiredX - node.x) * 0.085;
-          node.vy += (desiredY - node.y) * 0.085;
-          node.vx *= 0.76;
-          node.vy *= 0.76;
-          node.x += node.vx;
-          node.y += node.vy;
-          node.radius = node.startRadius + (node.targetRadius - node.startRadius) * eased;
-          node.group.style.opacity = node.radius > 0.1 ? "1" : "0";
-          node.group.style.pointerEvents = node.radius > 0.5 ? "auto" : "none";
-          node.label.style.opacity = node.radius > 9 ? "1" : "0";
+          if (node.targetRadius > 0.5) {
+            const desiredX = node.startX + (node.targetX - node.startX) * eased;
+            const desiredY = node.startY + (node.targetY - node.startY) * eased;
+            node.vx += (desiredX - node.x) * 0.08;
+            node.vy += (desiredY - node.y) * 0.08;
+            const gravityStrength = gravityStrengthFor();
+            node.vx += (centerX - node.x) * gravityStrength;
+            node.vy += (centerY - node.y) * gravityStrength;
+            node.vx *= 0.82;
+            node.vy *= 0.82;
+            node.x += node.vx;
+            node.y += node.vy;
+          } else {
+            node.vx = 0;
+            node.vy = 0;
+          }
+          node.radius = node.startRadius + (node.targetRadius - node.startRadius) * radiusEased;
+          node.rankProgress = node.startRankProgress + (node.targetRankProgress - node.startRankProgress) * eased;
+          if (node.targetRadius > 0.5 || node.radius > 9) {
+            const bubbleColor = lightenColor(node.baseRgb, node.rankProgress, 0.8);
+            if (node.lastBubbleColor !== bubbleColor) {
+              node.circle.setAttribute("fill", bubbleColor);
+              node.lastBubbleColor = bubbleColor;
+            }
+            const labelColor = lightenColor(labelBaseRgb, node.rankProgress, 0.5);
+            if (node.lastLabelColor !== labelColor) {
+              node.label.style.fill = labelColor;
+              node.lastLabelColor = labelColor;
+            }
+          }
+          const groupOpacity = node.radius > 0.1 ? "1" : "0";
+          if (node.lastGroupOpacity !== groupOpacity) {
+            node.group.style.opacity = groupOpacity;
+            node.lastGroupOpacity = groupOpacity;
+          }
+          const pointerEvents = node.radius > 0.5 ? "auto" : "none";
+          if (node.lastPointerEvents !== pointerEvents) {
+            node.group.style.pointerEvents = pointerEvents;
+            node.lastPointerEvents = pointerEvents;
+          }
+          const labelOpacity = node.radius > 9 ? "1" : "0";
+          if (node.lastLabelOpacity !== labelOpacity) {
+            node.label.style.opacity = labelOpacity;
+            node.lastLabelOpacity = labelOpacity;
+          }
         });
         resolveCollisions(frameNodes, !animate);
         frameNodes.forEach(node => {
-          if (Math.abs(node.vx) < 0.02) node.vx = 0;
-          if (Math.abs(node.vy) < 0.02) node.vy = 0;
+          if (Math.abs(node.vx) < 0.03) node.vx = 0;
+          if (Math.abs(node.vy) < 0.03) node.vy = 0;
         });
         frameNodes.forEach(node => {
-          node.circle.setAttribute("cx", node.x.toFixed(2));
-          node.circle.setAttribute("cy", node.y.toFixed(2));
-          node.circle.setAttribute("r", node.radius.toFixed(2));
-          node.label.setAttribute("x", node.x.toFixed(2));
-          node.label.setAttribute("y", node.y.toFixed(2));
-          node.label.setAttribute("font-size", labelSize(node.word, node.radius).toFixed(1));
+          const cx = node.x.toFixed(2);
+          const cy = node.y.toFixed(2);
+          const radius = node.radius.toFixed(2);
+          const transform = `translate(${cx} ${cy})`;
+          if (node.lastTransform !== transform) {
+            node.group.setAttribute("transform", transform);
+            node.lastTransform = transform;
+          }
+          if (node.lastRadius !== radius) {
+            node.circle.setAttribute("r", radius);
+            node.lastRadius = radius;
+          }
+          if (node.radius > 9) {
+            const fontSize = labelSize(node.word, node.radius).toFixed(1);
+            if (node.lastFontSize !== fontSize) {
+              node.label.setAttribute("font-size", fontSize);
+              node.lastFontSize = fontSize;
+            }
+          }
         });
         if (progress < 1) {
           requestAnimationFrame(frame);
@@ -542,6 +712,7 @@
     let renderQueueId = 0;
     function queueRender(animate = true) {
       if (renderQueueId) cancelAnimationFrame(renderQueueId);
+      animationId += 1;
       renderQueueId = requestAnimationFrame(() => {
         renderQueueId = 0;
         render(animate);
@@ -553,6 +724,7 @@
         cancelAnimationFrame(renderQueueId);
         renderQueueId = 0;
       }
+      resizeChart();
       const maxStart = dataset.days.length - state.days;
       state.index = Math.max(0, Math.min(maxStart, state.index));
       slider.max = String(maxStart);
@@ -774,6 +946,20 @@
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") closeAutoplayPopover();
     });
+
+    function queueChartResize() {
+      if (chartResizeFrame) cancelAnimationFrame(chartResizeFrame);
+      chartResizeFrame = requestAnimationFrame(() => {
+        chartResizeFrame = 0;
+        if (resizeChart()) syncControls(false);
+      });
+    }
+
+    if (typeof ResizeObserver === "function") {
+      new ResizeObserver(queueChartResize).observe(chartWrap);
+    } else {
+      window.addEventListener("resize", queueChartResize);
+    }
 
     syncControls(false);
   </script>
